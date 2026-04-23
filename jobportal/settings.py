@@ -30,7 +30,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 SECRET_KEY = 'django-insecure-%oz+x=baytdl)5c1j%#1dzbc+2s6lq)y@_$e33&7xv(z=u(g%4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['Asfaq.pythonanywhere.com']
 
