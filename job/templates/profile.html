@@ -1,0 +1,109 @@
+{% extends 'job/base.html' %}
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row g-4">
+
+        <!-- LEFT SIDEBAR PROFILE CARD -->
+        <div class="col-lg-4">
+
+            <div class="card border-0 shadow-sm text-center p-4">
+
+                <!-- PROFILE IMAGE -->
+                {% if profile.image %}
+                    <img src="{{ profile.image.url }}"
+                         class="rounded-circle mx-auto mb-3 shadow"
+                         width="130"
+                         height="130"
+                         style="object-fit: cover;">
+                {% else %}
+                    <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center mx-auto mb-3"
+                         style="width:130px;height:130px;font-size:40px;">
+                        {{ profile.user.username|first|upper }}
+                    </div>
+                {% endif %}
+
+                <!-- NAME -->
+                <h4 class="fw-bold mb-1">{{ profile.user.username }}</h4>
+
+                <!-- ROLE BADGE -->
+                <span class="badge bg-primary px-3 py-2 mb-3">
+                    {{ profile.role|title }}
+                </span>
+
+                <!-- EDIT BUTTON -->
+                <a href="{% url 'edit_profile' %}" class="btn btn-outline-primary w-100">
+                    ✏ Edit Profile
+                </a>
+
+                <hr class="my-3">
+
+                <!-- QUICK INFO -->
+                <div class="text-start small text-muted">
+
+                    <p class="mb-2">
+                        📞 <b>Phone:</b> {{ profile.phone|default:"Not added" }}
+                    </p>
+
+                    <p class="mb-2">
+                        📍 <b>Address:</b> {{ profile.address|default:"Not added" }}
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT CONTENT -->
+        <div class="col-lg-8">
+
+            <!-- SKILLS CARD -->
+            <div class="card border-0 shadow-sm mb-4 p-4">
+
+                <h5 class="fw-bold mb-3">🧠 Skills</h5>
+
+                {% if profile.skills %}
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for skill in profile.skills.splitlines %}
+                            <span class="badge bg-light text-dark border px-3 py-2">
+                                {{ skill }}
+                            </span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-muted">No skills added yet</p>
+                {% endif %}
+
+            </div>
+
+            <!-- EDUCATION -->
+            <div class="card border-0 shadow-sm mb-4 p-4">
+
+                <h5 class="fw-bold mb-3">🎓 Education</h5>
+
+                <p class="mb-0 text-muted">
+                    {{ profile.education|default:"No education details added" }}
+                </p>
+
+            </div>
+
+            <!-- EXPERIENCE -->
+            <div class="card border-0 shadow-sm mb-4 p-4">
+
+                <h5 class="fw-bold mb-3">💼 Experience</h5>
+
+                <p class="mb-0 text-muted">
+                    {{ profile.experience|default:"No experience added yet" }}
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

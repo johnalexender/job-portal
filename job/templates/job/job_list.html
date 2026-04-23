@@ -1,0 +1,135 @@
+{% extends 'job/base.html' %}
+{% block content %}
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<!-- CUSTOM CSS -->
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'job_list.css' %}">
+
+<div class="container job-page py-4">
+
+    <!-- HEADER -->
+    <div class="text-center mb-4">
+        <h1 class="title">
+            <i class="bi bi-briefcase-fill"></i> Find Your Dream Job
+        </h1>
+        <p class="subtitle">Explore top companies and opportunities</p>
+    </div>
+
+    <!-- SEARCH -->
+     <!-- SEARCH -->
+    <form method="GET" class="search-box mb-4">
+    <div class="input-group shadow-sm p-2 bg-white rounded-3 align-items-center gap-2">
+
+        <span class="input-group-text border-0 bg-transparent">
+            <i class="bi bi-search"></i>
+        </span>
+
+        <input type="text" name="q" class="form-control border-0 shadow-none"
+               placeholder="Search jobs, company, position..."
+               value="{{ request.GET.q }}">
+
+        <select name="type" class="form-select border-0 shadow-none w-auto">
+            <option value="">All Types</option>
+            <option value="full_time">Full Time</option>
+            <option value="part_time">Part Time</option>
+            <option value="remote">Remote</option>
+            <option value="internship">Internship</option>
+        </select>
+
+        <button class="btn btn-primary px-4 rounded-2">
+            Search
+        </button>
+
+    </div>
+    </form>  
+
+    <!-- STATS -->
+    <div class="stats mb-4">
+        <div class="badge bg-dark">
+            <i class="bi bi-grid"></i> {{ jobs|length }} Jobs
+        </div>
+    </div>
+
+    <div class="row">
+
+        <!-- JOB LIST -->
+        <div class="col-lg-8">
+
+            {% for job in jobs %}
+
+            <div class="job-card card mb-3 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+                            <h5 class="job-title">{{ job.title }}</h5>
+
+                            <p class="company">
+                                <i class="bi bi-building"></i>
+                                {{ job.company }} • {{ job.position }}
+                            </p>
+                        </div>
+
+                        <div class="text-end">
+                            <span class="badge type">{{ job.get_job_type_display }}</span>
+                        </div>
+
+                    </div>
+
+                    <div class="tags mt-2">
+
+                        <span class="badge bg-primary">
+                            {{ job.category }}
+                        </span>
+
+                        {% if job.deadline %}
+                            {% if job.is_expired %}
+                                <span class="badge bg-danger">
+                                    <i class="bi bi-x-circle"></i> Expired
+                                </span>
+                            {% else %}
+                                <span class="badge bg-success">
+                                    <i class="bi bi-clock"></i>
+                                    {{ job.deadline|date:"d M Y" }}
+                                </span>
+                            {% endif %}
+                        {% endif %}
+
+                    </div>
+
+                    <div class="meta mt-2">
+                        <small>
+                            <i class="bi bi-calendar"></i> {{ job.created_at|date:"d M Y" }} |
+                            <i class="bi bi-eye"></i> {{ job.views }} views |
+                            <i class="bi bi-people"></i> {{ job.applications.count }} applicants
+                        </small>
+                    </div>
+
+                    <div class="mt-3">
+                        <a href="{% url 'job_detail' job.id %}" class="btn btn-outline-primary btn-sm">
+                            View Details <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+            {% empty %}
+            <div class="alert alert-info text-center">
+                No jobs found
+            </div>
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

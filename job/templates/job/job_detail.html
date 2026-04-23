@@ -1,0 +1,129 @@
+{% extends 'job/base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <a href="{% url 'job_list' %}" class="btn btn-sm btn-light mb-3">
+    ⬅ Back
+    </a>
+
+    <!-- JOB HEADER CARD -->
+    <div class="card shadow-sm border-0 p-4">
+
+        <!-- TITLE -->
+        <h2 class="fw-bold mb-2">{{ job.title }}</h2>
+
+        <!-- META BADGES -->
+        <div class="mb-3">
+
+            <span class="badge bg-primary">
+                🏢 {{ job.company }}
+            </span>
+
+            <span class="badge bg-secondary">
+                👔 {{ job.position }}
+            </span>
+
+            <span class="badge bg-info text-dark">
+                📂 {{ job.category }}
+            </span>
+
+            <span class="badge bg-success">
+                📊 {{ job.status }}
+            </span>
+
+        </div>
+
+        <!-- ANALYTICS INFO -->
+        <p class="text-muted small">
+
+            📅 Posted:
+            {{ job.created_at|date:"d M Y" }}
+
+            &nbsp; | ⏳ Deadline:
+            {{ job.deadline }}
+
+            &nbsp; | 👁 Views:
+            {{ job.views }}
+
+            &nbsp; | 👥 Applicants:
+            {{ job.applications.count }}
+
+        </p>
+
+
+        <hr>
+
+        <!-- JOB IMAGE -->
+        {% if job.post_img %}
+            <div class="text-center mb-3">
+                <img src="{{ job.post_img.url }}"
+                     class="img-fluid rounded shadow-sm"
+                     style="max-width: 500px;"
+                     alt="Job Image"
+                     onerror="this.style.display='none'">
+            </div>
+        {% endif %}
+
+        <hr>
+        <hr>
+
+        <!-- RESPONSIBILITIES -->
+        <h5 class="fw-bold">Responsibilities</h5>
+        <p>{{ job.responsibility|linebreaks }}</p>
+
+        <!-- REQUIREMENTS -->
+        <h5 class="fw-bold">Requirements</h5>
+        <p>{{ job.requirements|linebreaks }}</p>
+
+        <!-- HR / COMPANY CONTACT INFO -->
+        <div class="mt-3 p-3 border rounded bg-light">
+            <h6 class="fw-bold mb-2">📞 HR Contact</h6>
+            {% if job.hr_email %}
+            <p class="mb-1">
+                📧 <b>Email:</b>
+                <a href="mailto:{{ job.hr_email }}">{{ job.hr_email }}</a>
+            </p>
+             {% endif %}
+
+            {% if job.hr_phone %}
+            <p class="mb-0">
+               📱 <b>Phone:</b>
+                <a href="tel:{{ job.hr_phone }}">{{ job.hr_phone }}</a>
+            </p>
+            {% endif %}
+
+        {% if not job.hr_email and not job.hr_phone %}
+            <p class="text-muted mb-0">No HR contact details available</p>
+        {% endif %}
+
+        </div>
+        <hr>
+
+        <!-- ACTION BUTTONS -->
+        <div class="d-flex gap-2">
+
+            <!-- APPLY BUTTON -->
+            <a href="{% url 'job_apply' job.pk %}" class="btn btn-success">
+                 🚀 Apply Now 
+            </a>
+
+            {% if user.is_authenticated and user.profile.role == 'employer' %}
+
+                <a href="{% url 'job_edit' job.id %}" class="btn btn-warning">
+                    ✏ Edit
+                </a>
+
+                <a href="{% url 'job_delete' job.id %}" class="btn btn-danger">
+                    🗑 Delete
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

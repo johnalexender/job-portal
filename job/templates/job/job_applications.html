@@ -1,0 +1,17 @@
+{% extends 'job/base.html' %}
+
+{% block content %}
+
+<h2>Applications for {{ job.title }}</h2>
+
+{% for app in applications %}
+<div class="card mb-2">
+    <div class="card-body">
+        <p><b>Name:</b> {{ app.name }}</p>
+        <p><b>Email:</b> {{ app.email }}</p>
+        <a href="{{ app.resume.url }}" target="_blank">View CV</a>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}
